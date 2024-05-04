@@ -45,7 +45,7 @@ public class StudentServiceImpl implements IStudentService {
         repository.save(student);
 
         if(request.getSubjectsIds() != null) {
-            setStudentSubjectsListToUser(request.getSubjectsIds(), student);
+            setStudentSubjectsListToUserWhenCreate(request.getSubjectsIds(), student);
         }
 
         return BaseResponse.builder()
@@ -122,6 +122,20 @@ public class StudentServiceImpl implements IStudentService {
             StudentSubject newStudentSubject = studentSubjectService.create(student, subject);
             student.getStudentSubjects().add(newStudentSubject);
         }
+
+        repository.save(student);
+    }
+
+    private void setStudentSubjectsListToUserWhenCreate(@NotNull List<Long> studentSubjectsIds, Student student) {
+        List<StudentSubject> tempStudentSubjects = new ArrayList<>();
+
+        for(Long subjectId : studentSubjectsIds) {
+            Subject subject = subjectService.findAndEnsureExists(subjectId);
+            StudentSubject newStudentSubject = studentSubjectService.create(student, subject);
+            tempStudentSubjects.add(newStudentSubject);
+        }
+
+        student.setStudentSubjects(tempStudentSubjects);
 
         repository.save(student);
     }
