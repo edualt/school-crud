@@ -113,16 +113,17 @@ public class StudentServiceImpl implements IStudentService {
     }
 
     private void setStudentSubjectsListToUser(@NotNull List<Long> studentSubjectsIds, Student student) {
-         List<StudentSubject> tempStudentSubjects = new ArrayList<>();
+        // Eliminar las asignaturas existentes del estudiante
+        studentSubjectService.deleteByStudentId(student.getId());
 
-         for(Long subjectId : studentSubjectsIds) {
+        // Crear y agregar las nuevas asignaturas al estudiante
+        for (Long subjectId : studentSubjectsIds) {
             Subject subject = subjectService.findAndEnsureExists(subjectId);
             StudentSubject newStudentSubject = studentSubjectService.create(student, subject);
-            tempStudentSubjects.add(newStudentSubject);
-         }
+            student.getStudentSubjects().add(newStudentSubject);
+        }
 
-         student.setStudentSubjects(tempStudentSubjects);
-
-         repository.save(student);
+        repository.save(student);
     }
+
 }

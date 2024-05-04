@@ -65,6 +65,12 @@ public class StudentSubjectServiceImpl implements IStudentSubjectService {
                 .build();
     }
 
+    @Override
+    public void deleteByStudentId(Long studentId) {
+        List<StudentSubject> studentSubjects = repository.findByStudentId(studentId);
+        repository.deleteAll(studentSubjects);
+    }
+
     private Subject from(SubjectProjection projection) {
         Subject subject = new Subject();
         subject.setId(projection.getId());

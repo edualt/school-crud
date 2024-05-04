@@ -18,6 +18,8 @@ public interface IStudentSubjectRepository extends JpaRepository<StudentSubject,
 
     StudentSubject findByStudentIdAndSubjectId(Long studentId, Long subjectId);
 
+    List<StudentSubject> findByStudentId(Long studentId);
+
     @Query(value = "SELECT subjects.* FROM student_subjects " +
             "INNER JOIN subjects ON student_subjects.subject_id = subjects.id " +
             "WHERE student_subjects.student_id = :studentId", nativeQuery = true)

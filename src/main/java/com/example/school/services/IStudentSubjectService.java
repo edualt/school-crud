@@ -10,4 +10,6 @@ public interface IStudentSubjectService {
     StudentSubject create(Student student, Subject subject);
     BaseResponse listAllSubjectsByStudentId(Long studentId);
     BaseResponse listAllStudentsBySubjectId(Long subjectId);
+
+    void deleteByStudentId(Long studentId);
 }
